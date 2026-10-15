@@ -11,10 +11,6 @@
 <a name="english"></a>
 ## 🇬🇧 English
 
-<div align="center">
-  <video src="assets/7.mp4" width="750px" autoplay loop muted playsinline></video>
-</div>
-
 **Quantum Tab** is a modern, highly customizable new tab extension for Google Chrome that breaks the standard 10-shortcut limit and turns your start page into a personal design studio.
 
 ### ✨ Key Features
