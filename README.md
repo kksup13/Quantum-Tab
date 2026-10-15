@@ -1,9 +1,16 @@
 <div align="center">
+  <img src="assets/icon.png" alt="Quantum Tab Logo" width="250" height="250">
   <h1>🌌 Quantum Tab</h1>
   <p><b>Custom, beautiful and unlimited new tab page for Google Chrome in Dark Glassmorphism style.</b></p>
   <p>
     <a href="#english">English</a> • <a href="#russian">Русский</a>
   </p>
+</div>
+
+<div align="center">
+  <img src="assets/screen2.png" alt="Quantum Tab Interface" width="1000px">
+  <br><br>
+  <img src="assets/screen1.png" alt="Customization Studio" width="1000px">
 </div>
 
 ---
