@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="pageTitle">New Tab</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="bg-layer" id="bg-layer"></div>
+  <div class="bg-overlay" id="bg-overlay"></div>
+
+  <!-- верхняя панель -->
+  <header class="top-bar">
+    <div class="stats" id="links-counter">Shortcuts: 0</div>
+    <div class="actions">
+      <button class="icon-btn" id="btn-add" data-i18n-title="addShortcut" title="Add shortcut">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      </button>
+      <button class="icon-btn" id="btn-settings" data-i18n-title="studioTitle" title="Customization Studio">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- центральный блок -->
+  <main class="container">
+    <section class="hero" id="hero-section">
+      <div class="clock-wrapper" id="clock-wrapper">
+        <div class="clock" id="clock">00:00</div>
+        <div class="date" id="date">Loading...</div>
+      </div>
+
+      <form class="search-box" id="search-form">
+        <select class="search-engine-select" id="engine-select" data-i18n-title="searchEngine" title="Search engine">
+          <option value="https://www.google.com/search?q=">Google</option>
+          <option value="https://ya.ru/search/?text=">Yandex</option>
+          <option value="https://duckduckgo.com/?q=">DuckDuckGo</option>
+          <option value="https://www.youtube.com/results?search_query=">YouTube</option>
+        </select>
+        <input type="text" id="search-input" data-i18n-placeholder="searchPlaceholder" placeholder="Search the web or enter URL..." autocomplete="off" autofocus>
+        <button type="submit" class="search-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </button>
+      </form>
+    </section>
+
+    <!-- сетка закладок -->
+    <section class="grid-wrapper">
+      <div class="bookmarks-grid" id="bookmarks-grid"></div>
+    </section>
+  </main>
+
+  <!-- редактирование ярлык -->
+  <div class="modal-backdrop" id="modal-link">
+    <div class="modal">
+      <h3 id="modal-title" data-i18n="addShortcut">Add shortcut</h3>
+      <form id="link-form">
+        <input type="hidden" id="link-index">
+        <div class="form-group">
+          <label data-i18n="lblTitle">Title</label>
+          <input type="text" id="link-title" data-i18n-placeholder="phTitle" placeholder="e.g. YouTube" required>
+        </div>
+        <div class="form-group">
+          <label data-i18n="lblUrl">URL Address</label>
+          <input type="text" id="link-url" placeholder="youtube.com" required>
+        </div>
+        <div class="form-group">
+          <label data-i18n="lblIcon">Custom Icon (Image URL — optional)</label>
+          <input type="text" id="link-icon" data-i18n-placeholder="phIcon" placeholder="Leave empty for auto-icon">
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="btn-cancel-link" data-i18n="btnCancel">Cancel</button>
+          <button type="submit" class="btn btn-primary" data-i18n="btnSave">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- панель -->
+  <aside class="settings-drawer" id="settings-drawer">
+    <div class="drawer-header">
+      <h3 data-i18n="studioHeader">🎨 Customization Studio</h3>
+      <button class="close-drawer" id="btn-close-settings">✕</button>
+    </div>
+
+    <div class="drawer-body">
+      <!-- пресеты -->
+      <div class="settings-section">
+        <h4 data-i18n="secPresets">Presets (Compositions)</h4>
+        <div class="presets-grid" id="presets-grid"></div>
+      </div>
+
+      <!-- фон градиент и тд -->
+      <div class="settings-section">
+        <h4 data-i18n="secBg">Background & Fit</h4>
+        <div class="form-group">
+          <label data-i18n="lblBgType">Background Type</label>
+          <select id="set-bgType" class="select-input">
+            <option value="linear" data-i18n="optLinear">Linear Gradient</option>
+            <option value="radial" data-i18n="optRadial">Radial Gradient</option>
+            <option value="solid" data-i18n="optSolid">Solid Color</option>
+            <option value="image" data-i18n="optImage">Custom Image / GIF</option>
+          </select>
+        </div>
+
+        <!-- контроллеры градиента -->
+        <div id="gradient-controls">
+          <div class="color-row">
+            <div class="color-picker-wrap">
+              <label data-i18n="lblColor1">Color 1</label>
+              <input type="color" id="set-grad1">
+            </div>
+            <div class="color-picker-wrap" id="wrap-grad2">
+              <label data-i18n="lblColor2">Color 2</label>
+              <input type="color" id="set-grad2">
+            </div>
+            <div class="color-picker-wrap" id="wrap-grad3">
+              <label data-i18n="lblColor3">Color 3</label>
+              <input type="color" id="set-grad3">
+            </div>
+          </div>
+
+          <div class="form-group" id="wrap-angle">
+            <label><span data-i18n="lblGradAngle">Gradient Angle:</span> <span id="val-gradAngle">135°</span></label>
+            <input type="range" id="set-gradAngle" min="0" max="360" step="5">
+          </div>
+        </div>
+
+        <!-- контроллеры и редактор картинки -->
+        <div id="image-controls" style="display:none;">
+          <div class="form-group">
+            <label data-i18n="lblImgUrl">Image URL</label>
+            <input type="text" id="set-bgUrl" placeholder="https://example.com/wallpaper.jpg">
+          </div>
+
+          <div class="form-group">
+            <label class="btn btn-secondary file-upload-btn">
+              <span data-i18n="btnUploadPc">📁 Upload Image from PC</span>
+              <input type="file" id="input-bg-file" accept="image/*" hidden>
+            </label>
+          </div>
+
+          <div class="sub-box">
+            <div class="sub-box-header">
+              <span data-i18n="lblCropSize">Crop & Size</span>
+              <button type="button" class="mini-reset" id="btn-center-bg" data-i18n="btnCenter">Center</button>
+            </div>
+
+            <div class="form-group">
+              <label data-i18n="lblDisplayMode">Display Mode</label>
+              <select id="set-bgFit" class="select-input">
+                <option value="cover" data-i18n="optCover">Fill Screen (Cover)</option>
+                <option value="contain" data-i18n="optContain">Fit Whole (Contain)</option>
+                <option value="custom" data-i18n="optCustomZoom">Manual Zoom (%)</option>
+                <option value="stretch" data-i18n="optStretch">Stretch (100% x 100%)</option>
+              </select>
+            </div>
+
+            <div class="form-group" id="wrap-bgZoom">
+              <label><span data-i18n="lblZoom">Scale (Zoom):</span> <span id="val-bgScale">100%</span></label>
+              <input type="range" id="set-bgScale" min="30" max="250" step="1">
+            </div>
+
+            <div class="form-group">
+              <label><span data-i18n="lblPosX">Horizontal Offset (X):</span> <span id="val-bgPosX">50%</span></label>
+              <input type="range" id="set-bgPosX" min="0" max="100" step="1">
+            </div>
+
+            <div class="form-group">
+              <label><span data-i18n="lblPosY">Vertical Offset (Y):</span> <span id="val-bgPosY">50%</span></label>
+              <input type="range" id="set-bgPosY" min="0" max="100" step="1">
+            </div>
+
+            <label class="checkbox-label" style="margin-top:6px;">
+              <input type="checkbox" id="set-bgRepeat"> <span data-i18n="chkRepeat">Tile Repeat</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 14px;">
+          <label><span data-i18n="lblBgDim">Background Dimming:</span> <span id="val-bgDim">40%</span></label>
+          <input type="range" id="set-bgDim" min="0" max="90">
+        </div>
+
+        <div class="form-group">
+          <label><span data-i18n="lblBgBlur">Background Blur:</span> <span id="val-bgBlur">8px</span></label>
+          <input type="range" id="set-bgBlur" min="0" max="32">
+        </div>
+      </div>
+
+      <!-- цвета -->
+      <div class="settings-section">
+        <h4 data-i18n="secColors">Color Scheme</h4>
+        <div class="color-row">
+          <div class="color-picker-wrap">
+            <label data-i18n="lblAccent">Accent</label>
+            <input type="color" id="set-accent">
+          </div>
+          <div class="color-picker-wrap">
+            <label data-i18n="lblText">Text</label>
+            <input type="color" id="set-textColor">
+          </div>
+          <div class="color-picker-wrap">
+            <label data-i18n="lblTiles">Tiles</label>
+            <input type="color" id="set-cardColor">
+          </div>
+        </div>
+      </div>
+
+      <!-- часы поиск неон -->
+      <div class="settings-section">
+        <h4 data-i18n="secClock">Clock, Neon & Search</h4>
+        <div class="form-group">
+          <label data-i18n="lblClockFont">Clock Font Style</label>
+          <select id="set-clockStyle" class="select-input">
+            <option value="modern" data-i18n="optClockModern">Modern Bold (Default)</option>
+            <option value="thin" data-i18n="optClockThin">Minimalist Thin</option>
+            <option value="cyber" data-i18n="optClockCyber">Cyberpunk Mono (Tech)</option>
+            <option value="serif" data-i18n="optClockSerif">Elegant Serif (Classic)</option>
+            <option value="outline" data-i18n="optClockOutline">Hollow Outline</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label><span data-i18n="lblClockSize">Clock Size:</span> <span id="val-clockSize">76px</span></label>
+          <input type="range" id="set-clockSize" min="40" max="140">
+        </div>
+
+        <!-- настройка неона часов -->
+        <div class="sub-box">
+          <div class="sub-box-header">
+            <label class="checkbox-label" style="background:none; padding:0;">
+              <input type="checkbox" id="set-clockGlow"> <span data-i18n="chkClockNeon">Enable Clock Neon</span>
+            </label>
+            <input type="color" id="set-clockGlowColor" class="mini-color" data-i18n-title="lblNeonColor" title="Clock Neon Color">
+          </div>
+          <div class="form-group" id="wrap-glowStrength" style="margin-bottom:0; margin-top:8px;">
+            <label><span data-i18n="lblNeonStrength">Neon Glow Intensity:</span> <span id="val-clockGlowStrength">28px</span></label>
+            <input type="range" id="set-clockGlowStrength" min="5" max="80">
+          </div>
+        </div>
+
+        <div class="toggles-grid" style="margin-top: 12px;">
+          <label class="checkbox-label"><input type="checkbox" id="set-showClock"> <span data-i18n="chkClock">Clock</span></label>
+          <label class="checkbox-label"><input type="checkbox" id="set-showSeconds"> <span data-i18n="chkSeconds">Seconds</span></label>
+          <label class="checkbox-label"><input type="checkbox" id="set-showDate"> <span data-i18n="chkDate">Date</span></label>
+          <label class="checkbox-label"><input type="checkbox" id="set-showSearch"> <span data-i18n="chkSearch">Search</span></label>
+        </div>
+
+        <div class="form-group" style="margin-top: 12px;">
+          <label><span data-i18n="lblSearchRadius">Search Bar Rounding:</span> <span id="val-searchRadius">16px</span></label>
+          <input type="range" id="set-searchRadius" min="0" max="36">
+        </div>
+      </div>
+
+      <!-- сетка и карточки -->
+      <div class="settings-section">
+        <h4 data-i18n="secGrid">Grid & Cards</h4>
+        <div class="form-group">
+          <label data-i18n="lblCardLayout">Card Layout</label>
+          <select id="set-cardLayout" class="select-input">
+            <option value="vertical" data-i18n="optLayoutVert">Classic Tiles (Vertical)</option>
+            <option value="horizontal" data-i18n="optLayoutHoriz">Compact Pills (Horizontal)</option>
+            <option value="icon-only" data-i18n="optLayoutIcon">Minimalist (Icons Only)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label><span data-i18n="lblCols">Columns per Row:</span> <span id="val-cols">6</span></label>
+          <input type="range" id="set-cols" min="3" max="12">
+        </div>
+
+        <div class="form-group">
+          <label><span data-i18n="lblMaxWidth">Container Width:</span> <span id="val-maxWidth">1160px</span></label>
+          <input type="range" id="set-maxWidth" min="700" max="1600" step="20">
+        </div>
+
+        <div class="form-group">
+          <label><span data-i18n="lblGridGap">Tile Gap:</span> <span id="val-gridGap">16px</span></label>
+          <input type="range" id="set-gridGap" min="6" max="36">
+        </div>
+
+        <div class="form-group">
+          <label><span data-i18n="lblCardRadius">Corner Rounding:</span> <span id="val-cardRadius">16px</span></label>
+          <input type="range" id="set-cardRadius" min="0" max="40">
+        </div>
+
+        <div class="form-group">
+          <label><span data-i18n="lblCardOpacity">Tile Opacity:</span> <span id="val-cardOpacity">55%</span></label>
+          <input type="range" id="set-cardOpacity" min="5" max="100">
+        </div>
+
+        <div class="form-group">
+          <label><span data-i18n="lblCardBlur">Tile Glass Blur:</span> <span id="val-cardBlur">14px</span></label>
+          <input type="range" id="set-cardBlur" min="0" max="32">
+        </div>
+
+        <div class="form-group">
+          <label><span data-i18n="lblIconSize">Icon Size:</span> <span id="val-iconSize">28px</span></label>
+          <input type="range" id="set-iconSize" min="18" max="48">
+        </div>
+
+        <div class="toggles-grid">
+          <label class="checkbox-label"><input type="checkbox" id="set-cardBorder"> <span data-i18n="chkCardBorder">Tile Borders</span></label>
+          <label class="checkbox-label"><input type="checkbox" id="set-showAddCard"> <span data-i18n="chkShowAdd">“+” Button in Grid</span></label>
+        </div>
+      </div>
+
+      <!-- копирование резервное -->
+      <div class="settings-section">
+        <h4 data-i18n="secBackup">Backup & Reset</h4>
+        <div class="backup-section">
+          <button type="button" class="btn btn-secondary" id="btn-export" data-i18n="btnExport">Export JSON</button>
+          <label class="btn btn-secondary file-label">
+            <span data-i18n="btnImport">Import JSON</span>
+            <input type="file" id="input-import" accept=".json" hidden>
+          </label>
+        </div>
+        <button type="button" class="btn btn-danger" id="btn-reset-settings" style="width:100%;" data-i18n="btnReset">Reset Design to Default</button>
+      </div>
+
+      <!-- донат язык -->
+      <div class="settings-section" style="border-bottom: none; margin-bottom: 0; padding-bottom: 0;">
+        <h4 data-i18n="secLang">Language / Язык</h4>
+        <div class="form-group">
+          <select id="set-lang" class="select-input">
+            <option value="en">🇬🇧 English</option>
+            <option value="ru">🇷🇺 Русский</option>
+            <option value="es">🇪🇸 Español</option>
+            <option value="de">🇩🇪 Deutsch</option>
+            <option value="fr">🇫🇷 Français</option>
+            <option value="zh">🇨🇳 中文 (简体)</option>
+            <option value="ja">🇯🇵 日本語</option>
+            <option value="ko">🇰🇷 한국어</option>
+            <option value="pt">🇵🇹 Português</option>
+            <option value="ar">🇸🇦 العربية</option>
+          </select>
+        </div>
+
+        <div class="donate-box">
+          ❤️ Donate - <a href="https://donatepay.ru/don/quantumtab" target="_blank" rel="noopener noreferrer">https://donatepay.ru/don/quantumtab</a>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <script src="script.js"></script>
+</body>
+</html>
